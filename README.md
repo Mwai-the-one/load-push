@@ -26,30 +26,55 @@ This project focuses on the **data ingestion and storage stage**, where a CSV da
 ├── main.py # Main script for data preparation
 ├── README.md # Project documentation (this file)
 └── requirements.txt # Python dependencies (optional)
+
+---
+
 🧩 Code Explanation
+
 1️⃣ Database Connection
 Function: create_connection(db_file)
 Establishes a connection to a SQLite database (creates it if it doesn’t exist)
 Returns a connection object that can be reused across functions
+
+---
 
 2️⃣ Create Table from DataFrame
 Function: create_table_from_df(conn, df, table_name)
 Writes the contents of a pandas DataFrame to a database table
 Uses if_exists='replace' by default, so the table is recreated each run (you can change to 'append')
 
+---
+
 3️⃣ Execute SQL Queries
 Function: execute_query(conn, query)
 Allows running any valid SQL command (e.g., CREATE TABLE, INSERT, UPDATE)
 Commits changes automatically
+
+---
 
 4️⃣ Fetch Data from SQL
 Function: fetch_data(conn, query)
 Runs a SELECT query and fetches all results
 Returns the results as a list of tuples, which can be converted to a pandas DataFrame
 
+---
+
 5️⃣ Main Function
 Function: main()
 Loads the raw CSV file
 Creates a SQLite connection
 Stores the data in a database table
-Fetches and displays the first 5 rows as a preview
+
+# Verification
+In the main function there is need to verify whether the data is loaded properly.
+By use of sql and the script: rows= fetch_data(conn, "SELECT * FROM sample_df LIMIT 5")
+This ensures we have the data we wanted.
+
+issue- the query doesn't include table names
+fix- I added (# Get column names from cursor.description
+        columns = [description[0] for description in c.description]
+        # Convert to DataFrame
+        df = pd.DataFrame(rows, columns=columns)
+        return df)
+        
+        
