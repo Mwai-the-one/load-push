@@ -71,10 +71,16 @@ By use of sql and the script: rows= fetch_data(conn, "SELECT * FROM sample_df LI
 This ensures we have the data we wanted.
 
 issue- the query doesn't include table names
-fix- I added (# Get column names from cursor.description
-        columns = [description[0] for description in c.description]
-        # Convert to DataFrame
-        df = pd.DataFrame(rows, columns=columns)
-        return df)
+fix- I added (
+
+# Get column names from cursor.description
+
+columns = [description[0] for description in c.description]
+
+# Convert to DataFrame
+
+df = pd.DataFrame(rows, columns=columns)
+
+return df)
         
         
